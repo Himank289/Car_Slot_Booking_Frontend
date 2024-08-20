@@ -41,6 +41,7 @@ describe('EditCar Component', () => {
     await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
     expect(screen.getByText(/Edit Car/i)).toBeInTheDocument();
   });
+
   test('handles save operation and navigates', async () => {
     (carService.getCarById as jest.Mock).mockResolvedValueOnce({ data: mockCar });
     (carService.updateCar as jest.Mock).mockResolvedValueOnce({});
