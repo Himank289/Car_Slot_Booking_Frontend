@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor,fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import EditCar from '../Pages/EditCar';
 import carService from '../Services/CarService';
@@ -40,5 +40,20 @@ describe('EditCar Component', () => {
 
     await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
     expect(screen.getByText(/Edit Car/i)).toBeInTheDocument();
+  });
+  test('handles save operation and navigates', async () => {
+    (carService.getCarById as jest.Mock).mockResolvedValueOnce({ data: mockCar });
+    (carService.updateCar as jest.Mock).mockResolvedValueOnce({});
+
+    render(
+      <Router>
+        <EditCar />
+      </Router>
+    );
+
+    await waitFor(() => expect(screen.queryByText(/Loading.../i)).toBeNull());
+
+    const saveButton = screen.getByText(/Save/i);
+    fireEvent.click(saveButton);
   });
   });
